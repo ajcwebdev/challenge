@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import Filter from './Filter';
 
 const RestaurantTable = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [filterTerm, setFilterTerm] = useState('');
 
   useEffect(() => {
     loadData();
@@ -19,8 +21,23 @@ const RestaurantTable = () => {
     setRestaurants(data)
   }
 
+  const filterRestaurants = () => {
+    return restaurants.filter(restaurant => {
+      const values = [
+        restaurant.state,
+        restaurant.genre
+      ]
+      return values.reduce((acc, value) => {
+        if (value.toLowerCase().includes(filterTerm.toLowerCase())) acc = true;
+        return acc;
+      }, false)
+    });
+  };
+  
   return (
     <>
+      <Filter filterTerm={filterTerm} setFilterTerm={setFilterTerm} />
+      
       <table>
         <tr>
           <th>Name</th>
@@ -30,7 +47,7 @@ const RestaurantTable = () => {
           <th>Telephone</th>
         </tr>
 
-        {restaurants.map(restaurant => {
+        {filterRestaurants().map(restaurant => {
           return (
             <tr key={restaurant.id}>
               <td>{restaurant.name}</td>
