@@ -4,6 +4,7 @@ import Filter from './Filter';
 const RestaurantTable = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filterTerm, setFilterTerm] = useState('');
+  const [paginationStartIndex, setPaginationStartIndex] = useState(0);
 
   useEffect(() => {
     loadData();
@@ -33,6 +34,18 @@ const RestaurantTable = () => {
       }, false)
     });
   };
+
+  const forwardTen = e => {
+    e.preventDefault();
+    setPaginationStartIndex(paginationStartIndex + 10)
+    console.log(e);
+  };
+  
+  const backwardTen = e => {
+    e.preventDefault();
+    setPaginationStartIndex(paginationStartIndex - 10)
+    console.log(e);
+  };
   
   return (
     <>
@@ -47,7 +60,7 @@ const RestaurantTable = () => {
           <th>Telephone</th>
         </tr>
 
-        {filterRestaurants().map(restaurant => {
+        {filterRestaurants().slice(paginationStartIndex, paginationStartIndex + 10).map(restaurant => {
           return (
             <tr key={restaurant.id}>
               <td>{restaurant.name}</td>
@@ -58,6 +71,13 @@ const RestaurantTable = () => {
             </tr>
           )})}
       </table>
+
+      <form onSubmit={e => backwardTen(e)}>
+        <button>Previous 10</button>
+      </form>
+      <form onSubmit={e => forwardTen(e)}>
+        <button>Next 10</button>
+      </form>
     </>
   );
 }
