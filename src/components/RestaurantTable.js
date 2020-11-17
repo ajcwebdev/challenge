@@ -15,6 +15,7 @@ const RestaurantTable = () => {
       }
     })
     const data = await res.json()
+    data.sort((a,b) => b.name < a.name ? 1 : -1)
     setRestaurants(data)
   }
 
