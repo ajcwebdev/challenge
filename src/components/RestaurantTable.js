@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import Filter from './Filter';
+import Search from "./Search";
 
 const RestaurantTable = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filterTerm, setFilterTerm] = useState('');
   const [paginationStartIndex, setPaginationStartIndex] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     loadData();
@@ -49,6 +51,7 @@ const RestaurantTable = () => {
   
   return (
     <>
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Filter filterTerm={filterTerm} setFilterTerm={setFilterTerm} />
       
       <table>
